@@ -1,0 +1,112 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''steps''''steps''''''steps''''steps''''''steps''''''steps''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''ROTATE STEPS EVERY TIME MACRO RUNS''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'sort by oldest files, files that have never been sent will be on top
+'count never sents and divide by 3, each third goes to sheet named V, C, R
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'Identify oldest files remaining with no bank and no employer
+'divide range by two categories oldest and older
+'Dates      V               C           R
+'oldest     c-no hits       r-no hits   v-no hits
+'older      r-no hits       v-no hits   c-no hits
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'Identify oldest files remaining
+'divide range by two categories oldest and older
+'Dates      V               C           R
+'oldest     c-no hits       r-no hits   v-no hits
+'older      r-no hits       v-no hits   c-no hits
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'release each v,c,r sheet as csv file
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'crack beer
+Option Explicit
+Public NeverSent As Range, NoAssets As Range, Remainder As Range
+Sub Main()
+'delete old data
+Application.DisplayAlerts = False
+Dim ws As Worksheet
+For Each ws In ThisWorkbook.Worksheets
+    If ws.Name <> "Report" Then ws.Delete
+Next ws
+Application.DisplayAlerts = True
+Public Main As Worksheet: Set Main = Sheets("Report")
+
+'add sheets
+Sheets.Add
+ActiveSheet.Name = "V"
+Public V As Worksheet: Set V = Sheets("V")
+Sheets.Add
+ActiveSheet.Name = "C"
+Public C As Worksheet: Set C = Sheets("C")
+Sheets.Add
+ActiveSheet.Name = "R"
+Public R As Worksheet: Set R = Sheets("R")
+
+SortData
+
+Divide_never_sents_equally
+
+Oldest_Older_With_No_Assets
+
+Oldest_Older_Remaining
+End Sub
+Sub SortData()
+'set up filter to filter range by oldest
+
+'create named ranges and move to data sheet each time procedure is called
+Sheets.Add
+ActiveSheet.Name = "Data"
+Dim D As Worksheet: Set D = Sheets("Data")
+
+
+End Sub
+Sub Divide_never_sents_equally()
+'Move data with never sents
+Set NeverSent = Main.Range("A1:A3")
+NeverSent.Cut D.Range("A1")
+Application.CutCopyMode = False
+
+'divide by three and move each third to v,c,r
+
+'clear datasheet
+D.Cells.Clear
+End Sub
+Sub Oldest_Older_With_No_Assets()
+'Move data with No Assets
+Set NoAssets = Main.Range("A1:A3")
+NoAssets.Cut D.Range("A1")
+Application.CutCopyMode = False
+
+'divide by three and move each third to v,c,r
+
+'clear datasheet
+D.Cells.Clear
+End Sub
+Sub Oldest_Older_Remaining()
+'Move remaining data
+Set Remainder = Main.Range("A1:A3")
+Remainder.Cut D.Range("A1")
+Application.CutCopyMode = False
+
+'divide by three and move each third to v,c,r
+
+'clear datasheet
+D.Cells.Clear
+End Sub
